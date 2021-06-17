@@ -75,9 +75,7 @@ let products = [
   }
 ]
 
-app.get('/', (req, res)=>{
-  res.send('<h1><a href="/products">Products API</a></h1>')
-})
+app.use('/', express.static(__dirname + '/public'))
 
 app.get('/products', (req, res)=>{
   res.json(products)
@@ -105,7 +103,7 @@ app.post('/products', (req, res)=>{
   const product = req.body
 
 
-  if(!product || !product.name || !product.price){
+  if(!product || !product.name || !product.price || !product.description){
     return res.status(400).json({
       error: 'product is missing'
     })

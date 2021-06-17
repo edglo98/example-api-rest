@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
+  <title>📡 API REST</title>
+</head>
+<body>
+  <div class="container">
+    <h1 style="margin: 15px;">Products APi 🕶</h1>
+    <h3 style="margin: 8px;">📞 <a href="/products" target="_blank">Get all products</a></h3>
+    <form class="form-id" onsubmit="go()">
+      <h3>🆔 Get product by ID :
+      </h3>
+      <input  class="input-id" placeholder="ID" type="text" name="" id="">
+      <button type="submit">Go</button>
+    </form>
+    <form class="form-id" action="">
+      <h3>🚮 Delete product : 
+      </h3>
+      <input class="input-id" placeholder="ID" type="text" name="" id="">
+      <button type="submit">Go</button>
+    </form>
+    <form class="create" action="">
+      <h3>💥 Create product :</h3>
+      <input placeholder="Name" type="text" name="name" id="name">
+      <input placeholder="Description" type="text" name="description" id="description">
+      <input placeholder="Price" type="text" name="price" id="price">
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+  <script>
+    function go(){
+      window.open('https://e-example-api-rest.herokuapp.com/products/1', '_blank');
+    }
+  </script>
+</body>
+</html>
