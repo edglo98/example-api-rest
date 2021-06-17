@@ -95,14 +95,19 @@ app.get('/products/:id', (req, res)=>{
 
 app.delete('/products/:id', (req, res)=>{
   const {id} = req.params
+  
+  if( !products.some((prod)=>prod.id === Number(id)) ){
+    return res.status(400).json({
+      error: 'Product not found'
+    })
+  }
   products = products.filter(prod => prod.id !== Number(id))
   res.status(204).end()
 })
 
 app.post('/products', (req, res)=>{
   const product = req.body
-
-
+  console.log(product.name);
   if(!product || !product.name || !product.price || !product.description){
     return res.status(400).json({
       error: 'product is missing'

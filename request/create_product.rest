@@ -1,13 +1,13 @@
-POST http://localhost:3001/products
+POST https://e-example-api-rest.herokuapp.com/products
 Content-Type: application/json
 
 {
-  "price": 50,
+  "price": 120,
   "image_url": "https://ecubi-live-images.s3.us-east-2.amazonaws.com/604666743deba80011bc7397/variants/604e180c512f9d0012795cc1.jpeg",
-  "published": false,
-  "stock": 0,
-  "name": "Te de Menta Francesa ",
-  "description": "Te"
+  "published": true,
+  "stock": 20,
+  "name": "Producto de prueba",
+  "description": "la descripcion jejejejejejejejeje"
 }
 
 ###
@@ -16,4 +16,15 @@ POST http://localhost:3001/products
 Content-Type: application/json
 
 {
+}
+
+###
+
+POST http://localhost:3001/products
+Content-Type: application/json
+
+{
+  "price": 120,
+  "name": "Producto de prueba",
+  "description": "la descripcion jejejejejejejejeje"
 }

@@ -9,33 +9,94 @@
 </head>
 <body>
   <div class="container">
+    <div>
+      <h4>Alert</h4>
+    </div>
     <h1 style="margin: 15px;">Products APi 🕶</h1>
+
     <h3 style="margin: 8px;">📞 <a href="/products" target="_blank">Get all products</a></h3>
-    <form class="form-id" onsubmit="go()">
-      <h3>🆔 Get product by ID :
-      </h3>
-      <input  class="input-id" placeholder="ID" type="text" name="" id="">
+    
+    <form class="form-id" id="ge-product-id" >
+      <h3>🆔 Get product by ID :</h3>
+      <input  class="input-id" placeholder="ID" type="text" name="id" >
       <button type="submit">Go</button>
     </form>
-    <form class="form-id" action="">
-      <h3>🚮 Delete product : 
-      </h3>
-      <input class="input-id" placeholder="ID" type="text" name="" id="">
+
+    <form class="form-id" id="delete-product">
+      <h3>🚮 Delete product :</h3>
+      <input class="input-id" placeholder="ID" type="text" name="id">
       <button type="submit">Go</button>
     </form>
-    <form class="create" action="">
+
+    <form class="create" id="create-product">
       <h3>💥 Create product :</h3>
-      <input placeholder="Name" type="text" name="name" id="name">
-      <input placeholder="Description" type="text" name="description" id="description">
-      <input placeholder="Price" type="text" name="price" id="price">
+      <input placeholder="Name" type="text" name="name">
+      <input placeholder="Description" type="text" name="description" >
+      <input placeholder="Price" type="text" name="price" >
       <button type="submit">Create</button>
     </form>
   </div>
 
   <script>
-    function go(){
-      window.open('https://e-example-api-rest.herokuapp.com/products/1', '_blank');
-    }
+    const $byId = document.querySelector('#ge-product-id')
+    const $deleteForm = document.querySelector('#delete-product')
+    const $createForm = document.querySelector('#create-product')
+
+    $byId.addEventListener('submit', (event)=>{
+      event.preventDefault()
+      const id = new FormData(event.target).get('id')
+      if(!id){
+        return
+      }
+      window.open(`https://e-example-api-rest.herokuapp.com/products/${id}`, '_blank');
+    })
+
+    $deleteForm.addEventListener('submit', (event)=>{
+      event.preventDefault()
+      const id = new FormData(event.target).get('id')
+      console.log(id)
+      if(!id){
+        return
+      }
+      fetch(`https://e-example-api-rest.herokuapp.com/products/${id}`, {
+        method: 'DELETE'
+      })
+      .then((res)=>{
+        console.log(res);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    })
+
+    $createForm.addEventListener('submit', (event)=>{
+      event.preventDefault()
+      const formData = new FormData(event.target)
+
+      const data = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        price: formData.get('price')
+      }
+      
+      if(!data){
+        return
+      }
+      fetch(`https://e-example-api-rest.herokuapp.com/products`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify(data)
+      })
+      .then((res)=>{
+        console.log(res);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    })
+    
   </script>
 </body>
 </html>
