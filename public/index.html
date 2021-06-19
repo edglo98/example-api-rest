@@ -47,7 +47,8 @@
       if(!id){
         return
       }
-      window.open(`https://e-example-api-rest.herokuapp.com/products/${id}`, '_blank');
+      window.open(`https://e-example-api-rest.herokuapp.com/products/${id}`, '_blank')
+      event.target.reset()
     })
 
 
