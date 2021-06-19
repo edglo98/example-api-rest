@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-const port = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001
 
 let products = [
   {
@@ -102,15 +102,15 @@ app.delete('/products/:id', (req, res)=>{
     })
   }
   products = products.filter(prod => prod.id !== Number(id))
-  res.status(204).end()
+  res.status(204).json({menssage: 'Product deleted'}).end()
 })
 
 app.post('/products', (req, res)=>{
   const product = req.body
-  console.log(product.name);
+  
   if(!product || !product.name || !product.price || !product.description){
     return res.status(400).json({
-      error: 'product is missing'
+      error: 'Product is missing'
     })
   }
 
@@ -133,6 +133,21 @@ app.use((_req, res)=>{
   })
 })
 
-app.listen(port, ()=>{
-  console.log(`server runing on port ${port}`)
+app.listen(PORT, ()=>{
+  console.log(' ------------------------------------------------ ');
+  console.log(`|  💻 Server runing on port ${PORT}.                |\n|  You can watch here: http://localhost:${PORT}/    |`)
 })
+
+// Run local server
+let os
+if (process.env.NODE_ENV === "development") {
+  os = require( 'os' )
+  const networkInterfaces = os.networkInterfaces( )
+  const localIpNetwork = networkInterfaces.en0[1].address
+  app.listen(PORT, localIpNetwork, ()=>{
+    console.log('|                                                |');
+    console.log(`|  📡 Server runing on local network.            |\n|  You can watch here: http://${localIpNetwork}:${PORT}/  |`)
+    console.log(' ------------------------------------------------ ');
+  })
+}
+

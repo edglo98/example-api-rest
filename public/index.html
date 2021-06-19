@@ -9,31 +9,30 @@
 </head>
 <body>
   <div class="container">
-    <div>
-      <h4>Alert</h4>
-    </div>
+    <div id="alert" class="alert-close"></div>
+
     <h1 style="margin: 15px;">Products APi 🕶</h1>
 
     <h3 style="margin: 8px;">📞 <a href="/products" target="_blank">Get all products</a></h3>
     
     <form class="form-id" id="ge-product-id" >
       <h3>🆔 Get product by ID :</h3>
-      <input  class="input-id" placeholder="ID" type="text" name="id" >
-      <button type="submit">Go</button>
+      <input required class="input-id" placeholder="ID" type="text" name="id" >
+      <button id="btn-get" type="submit">Go</button>
     </form>
 
     <form class="form-id" id="delete-product">
       <h3>🚮 Delete product :</h3>
-      <input class="input-id" placeholder="ID" type="text" name="id">
-      <button type="submit">Go</button>
+      <input required class="input-id" placeholder="ID" type="text" name="id">
+      <button id="btn-delete" type="submit">Go</button>
     </form>
 
     <form class="create" id="create-product">
       <h3>💥 Create product :</h3>
-      <input placeholder="Name" type="text" name="name">
-      <input placeholder="Description" type="text" name="description" >
-      <input placeholder="Price" type="text" name="price" >
-      <button type="submit">Create</button>
+      <input required placeholder="Name" type="text" name="name">
+      <input required placeholder="Description" type="text" name="description" >
+      <input required placeholder="Price" type="text" name="price" >
+      <button id="btn-create" type="submit">Create</button>
     </form>
   </div>
 
@@ -51,26 +50,58 @@
       window.open(`https://e-example-api-rest.herokuapp.com/products/${id}`, '_blank');
     })
 
+
+    // removeeeeeeee ---------------
+
     $deleteForm.addEventListener('submit', (event)=>{
       event.preventDefault()
       const id = new FormData(event.target).get('id')
-      console.log(id)
+      const $btn = document.querySelector('#btn-delete')
+      const $alert = document.querySelector('#alert')
+      
       if(!id){
         return
       }
+
       fetch(`https://e-example-api-rest.herokuapp.com/products/${id}`, {
         method: 'DELETE'
       })
       .then((res)=>{
-        console.log(res);
+        // console.log(res);
+        if(res.ok){
+          event.target.reset()
+        }
+        return res.json()
       })
-      .catch((err)=>{
-        console.log(err);
+      .then(data=>{
+        console.log(data);
+        if(!data.error){
+          $alert.classList.add('alert-open-good')
+          $alert.innerHTML = '<h1>❕</h1><h5>Product deleted 😓</h5>'
+        }else{
+          $alert.classList.add('alert-open-error')
+          $alert.innerHTML = `<h1>❕</h1><h5>Ups ${data.error}</h5>`
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+      .finally(()=>{
+        $btn.innerHTML = 'Go'
+        $btn.style.backgroundColor = 'dodgerblue'
+        setTimeout(()=>{
+          $alert.classList.remove('alert-open-good')
+          $alert.classList.remove('alert-open-error')
+        },3000)
       })
     })
 
+    // createeeeeee-------
+
     $createForm.addEventListener('submit', (event)=>{
       event.preventDefault()
+      const $btn = document.querySelector('#btn-create')
+      const $alert = document.querySelector('#alert')
       const formData = new FormData(event.target)
 
       const data = {
@@ -79,9 +110,12 @@
         price: formData.get('price')
       }
       
-      if(!data){
+      if(!data || !data.name || !data.price || !data.description){
         return
       }
+      
+      $btn.innerHTML = '<div class="lds-hourglass"></div>'
+      $btn.style.backgroundColor = '#ccc9c9'
       fetch(`https://e-example-api-rest.herokuapp.com/products`, {
         method: 'POST',
         headers: {
@@ -89,11 +123,26 @@
         },
         body: JSON.stringify(data)
       })
-      .then((res)=>{
-        console.log(res);
+      .then(res=>{
+        if(res.ok){
+          event.target.reset()
+        }
+        return res.json()
+      })
+      .then(data=>{
+        console.log(data);
+        $alert.classList.add('alert-open-good')
+        $alert.innerHTML = '<h1>❕</h1><h5>Product created 😎</h5>'
       })
       .catch((err)=>{
-        console.log(err);
+        console.error('error',err);
+      })
+      .finally(()=>{
+        $btn.innerHTML = 'Create'
+        $btn.style.backgroundColor = 'dodgerblue'
+        setTimeout(()=>{
+          $alert.classList.remove('alert-open-good')
+        },3000)
       })
     })
     
