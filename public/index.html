@@ -65,27 +65,29 @@
       }
 
       fetch(`https://e-example-api-rest.herokuapp.com/products/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
       })
       .then((res)=>{
         // console.log(res);
         if(res.ok){
           event.target.reset()
-        }
-        return res.json()
-      })
-      .then(data=>{
-        console.log(data);
-        if(!data.error){
           $alert.classList.add('alert-open-good')
           $alert.innerHTML = '<h1>❕</h1><h5>Product deleted 😓</h5>'
         }else{
+          return res.json()
+        }
+      })
+      .then(data=>{
+        if(data && data.error){
           $alert.classList.add('alert-open-error')
           $alert.innerHTML = `<h1>❕</h1><h5>Ups ${data.error}</h5>`
         }
       })
       .catch(err=>{
-        console.log(err)
+        console.error(err);
       })
       .finally(()=>{
         $btn.innerHTML = 'Go'

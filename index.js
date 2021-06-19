@@ -102,7 +102,7 @@ app.delete('/products/:id', (req, res)=>{
     })
   }
   products = products.filter(prod => prod.id !== Number(id))
-  res.status(204).json({menssage: 'Product deleted'})
+  return res.status(204).json({menssage: 'Product deleted'})
 })
 
 app.post('/products', (req, res)=>{
